@@ -476,14 +476,16 @@ solve()
         return fallback_theory, fallback_tasks
 
     try:
-        response = client.models.generateContent(
+        response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt,
             config={
-                "responseMimeType": "application/json"
+                "response_mime_type": "application/json"
             }
         )
-        data = json.loads(response.text)
+        text_content = response.text or "{}"
+        clean_json = text_content.replace("```json", "").replace("```", "").strip()
+        data = json.loads(clean_json)
         return data.get("theory_markdown", ""), data.get("tasks", [])
     except Exception as e:
         st.error(f"Gemini API қатесі: {e}")
@@ -514,12 +516,14 @@ def evaluate_student_code_ai(task_text: str, student_code: str, language: str):
         return {"score": 9, "feedback": "Жақсы шешім! Алгоритмдік логика сақталған (Офлайн бағалау үлгісі).", "xp_earned": 90}
 
     try:
-        response = client.models.generateContent(
+        response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt,
-            config={"responseMimeType": "application/json"}
+            config={"response_mime_type": "application/json"}
         )
-        return json.loads(response.text)
+        text_content = response.text or "{}"
+        clean_json = text_content.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean_json)
     except Exception:
         return {"score": 8, "feedback": "Жұмыс қабылданды. Дескриптор талаптары орындалды.", "xp_earned": 80}
 
