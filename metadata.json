@@ -1,0 +1,6 @@
+{
+  "name": "FTM Edu - Информатика LMS",
+  "description": "7-11 сынып информатика мұғалімдері мен оқушыларына арналған үш тілді AI білім беру платформасы (LMS) мен Python Streamlit прототипі.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
